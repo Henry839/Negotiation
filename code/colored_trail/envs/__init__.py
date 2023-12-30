@@ -12,8 +12,7 @@ class ColoredTrailEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
 
     def __init__(self, render_mode=None, size=5, agent_num=1):
-        '''
-        Parameters:
+        ''' Parameters:
             render_mode: str
             size: int, board size
             agent_num: int, number of agents
@@ -48,6 +47,7 @@ class ColoredTrailEnv(gym.Env):
 
         # We have 5 actions, corresponding to "right", "up", "left", "down", "negotiation"
         # TODO: change to 5 actions, add negotiation action
+        # NOTE: Do it after the implementation color blocks part is done
         self.action_space = spaces.Discrete(4)
 
     
