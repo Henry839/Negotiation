@@ -8,7 +8,8 @@ from gymnasium import spaces
 import pygame
 import numpy as np
 
-def allocation_amount(num_people, amount): #return a random list of num_people in length and amount in sum.
+def allocation_amount(num_people, amount): 
+    #return a random list of num_people in length and amount in sum.
     a = [np.random.randint(0, amount) for i in range(num_people-1)]
     a.append(0)
     a.append(amount)
