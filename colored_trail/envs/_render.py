@@ -53,20 +53,21 @@ def render_frame(self):
                     ),
                 )
 
-    # First we draw the target
-    pygame.draw.circle(
-        canvas,
-        (192, 192, 192),
-        (self.target_location + 0.5) * pix_square_size,
-        pix_square_size / 3,
-    )
-    # Now we draw the agent
-    pygame.draw.circle(
-        canvas,
-        (0, 0, 0),
-        (self.agent_location + 0.5) * pix_square_size,
-        pix_square_size / 3,
-    )
+    for i in range(self.agent_num):
+        # First we draw the target
+        pygame.draw.circle(
+            canvas,
+            (192, 192, 192),
+            (self.target_location_list[i] + 0.5) * pix_square_size,
+            pix_square_size / 3,
+        )
+        # Now we draw the agent
+        pygame.draw.circle(
+            canvas,
+            (0, 0, 0),
+            (self.agent_location_list[i] + 0.5) * pix_square_size,
+            pix_square_size / 3,
+        )
 
     # Finally, add some gridlines
     for x in range(self.size + 1):

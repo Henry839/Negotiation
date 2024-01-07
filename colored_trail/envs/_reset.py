@@ -21,18 +21,19 @@ def sample_target_location(self, agent_location):
         if abs(target_location[0] - agent_location[0]) +  \
         abs(target_location[1] - agent_location[1]) == 3:
             break
+    # print("target_location:",target_location)
     return target_location
 
 
 
-def reset(self, seed=None, options=None):
+def reset(self, idx = 0, seed=None, options=None):
     super(type(self), self).reset(seed=seed)
 
-    # sample agent and target locations
-    self.agent_location_list = [self.np_random.integers(0, self.size, size=2, dtype=int) 
+    # The agent always starts at the center of the board
+    self.agent_location_list = [np.array([int(self.size / 2), int(self.size / 2)])
                                 for i in range(self.agent_num)]
-
-    self.target_location_list = [self.sample_target_location(agent_location) 
+    # sample agent and target locations
+    self.target_location_list = [self.sample_target_location(agent_location)
                                  for agent_location in self.agent_location_list]
 
     # reset board
@@ -41,9 +42,10 @@ def reset(self, seed=None, options=None):
     # reset chips list
     for i in range(self.agent_num):
         # 0:white 1:red 2:green 3:blue
-        self.chip_list[i] = self.ini_chip(self.agent_num, 4)
+        self.chip_list[i] = self.ini_chip(4, 4)
 
-    observation = self.get_obs()
+    observation = self.get_obs(idx)
+
     info = self.get_info()
 
     if self.render_mode == "human":
