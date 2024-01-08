@@ -26,30 +26,49 @@ def sample_target_location(self, agent_location):
 
 
 
-def reset(self, idx = 0, seed=None, options=None):
+def reset(self, seed=None):
+    '''
+    Reset function of the environment
+    Parameters:
+        seed: int, the seed of the environment
+    Return:
+        observation: list, the observation of each agent on the environment
+        info: array, the distance info of the environment
+    '''
     super(type(self), self).reset(seed=seed)
 
-    # The agent always starts at the center of the board
-    self.agent_location_list = [np.array([int(self.size / 2), int(self.size / 2)])
-                                for i in range(self.agent_num)]
+    # sample agent init location
+    self.agent_location_list = {i: (self.np_random.integers(0, self.size, size=2, dtype=int))
+                                for i in range(self.agent_num)}
     # sample agent and target locations
-    self.target_location_list = [self.sample_target_location(agent_location)
-                                 for agent_location in self.agent_location_list]
+    self.target_location_list = {i: self.sample_target_location(self.agent_location_list[i])
+                                 for i in range(self.agent_num)}
 
     # reset board
     self.board = np.random.randint(low=0, high=4, size=(self.size, self.size))
 
     # reset chips list
-    for i in range(self.agent_num):
-        # 0:white 1:red 2:green 3:blue
-        self.chip_list[i] = self.ini_chip(4, 4)
+    self.chip_list = {i : self.ini_chip(type = 4, amount = 4) 
+                          for i in range(self.agent_num)}
+    # each proposal is empty proposal
+    self.proposals_list = {i:{'color_out':0,
+                              'color_in':0,
+                              'out_num':0,
+                              'in_num':0,
+                              }
+                           for i in range(self.agent_num)}
+    # unvalid responses
+    self.responses_list = {i: i
+                           for i in range(self.agent_num)}
 
-    observation = self.get_obs(idx)
 
+    # observation list of each agent
+    observation = self.get_obs()
+
+    # distance info
     info = self.get_info()
 
     if self.render_mode == "human":
         self.render_frame()
-
     return observation, info
 
